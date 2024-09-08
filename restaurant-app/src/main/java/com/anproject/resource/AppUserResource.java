@@ -2,9 +2,9 @@ package com.anproject.resource;
 
 import java.util.List;
 
-import com.anproject.dto.request.RoleRequestDTO;
-import com.anproject.dto.response.RoleResponseDTO;
-import com.anproject.service.RoleService;
+import com.anproject.dto.request.AppUserRequestDTO;
+import com.anproject.dto.response.AppUserResponseDTO;
+import com.anproject.service.AppUserService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -18,20 +18,20 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/roles")
-public class RoleResource {
-
+@Path("/users")
+public class AppUserResource {
+	
 	@Inject
-	private RoleService roleService;
-
+	AppUserService appUserService;
+	
 	@POST
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveRole(RoleRequestDTO roleRequestDto) {
+	public Response saveAppUser(AppUserRequestDTO appUserRequestDTO) {
 		try {
-			roleService.saveRole(roleRequestDto);
-			return Response.status(Response.Status.CREATED).entity(roleRequestDto).build();
+			appUserService.saveAppUser(appUserRequestDTO);
+			return Response.status(Response.Status.CREATED).entity(appUserRequestDTO).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -41,10 +41,10 @@ public class RoleResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateRole(RoleRequestDTO roleRequestDto) {
+	public Response updateAppUser(AppUserRequestDTO appUserRequestDTO) {
 		try {
-			roleService.updateRole(roleRequestDto);
-			return Response.status(Response.Status.OK).entity(roleRequestDto).build();
+			appUserService.updateAppUser(appUserRequestDTO);
+			return Response.status(Response.Status.OK).entity(appUserRequestDTO).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -55,7 +55,7 @@ public class RoleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteRole(@PathParam("id") int id) {
 		try {
-			roleService.deleteRole(id);
+			appUserService.deleteAppUser(id);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -67,9 +67,9 @@ public class RoleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoleById(@PathParam("id") int id) {
 		try {
-			RoleResponseDTO role = roleService.getRoleById(id);
-			if (role != null) {
-				return Response.status(Response.Status.OK).entity(role).build();
+			AppUserResponseDTO user = appUserService.getUserById(id);
+			if (user != null) {
+				return Response.status(Response.Status.OK).entity(user).build();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
@@ -83,11 +83,11 @@ public class RoleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllRoles() {
 		try {
-			List<RoleResponseDTO> roles = roleService.getAllRoles();
-			return Response.status(Response.Status.OK).entity(roles).build();
+			List<AppUserResponseDTO> users = appUserService.getAllAppUsers();
+			return Response.status(Response.Status.OK).entity(users).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-
+	
 }

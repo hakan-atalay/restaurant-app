@@ -1,82 +1,82 @@
 package com.anproject.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.anproject.config.HibernateConfig;
-import com.anproject.entity.Role;
+import com.anproject.entity.AppUser;
 
-import java.util.List;
+public class AppUserDAO {
 
-public class RoleDAO extends HibernateConfig{
-
-	public void saveRole(Role role) {
-		Session session = HibernateConfig.getSessionFactory().openSession();
-		Transaction transaction = null;
-		try{
-			transaction = session.beginTransaction();
-			session.persist(role);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null)
-				transaction.rollback();
-			e.printStackTrace();
-		}finally {
-			session.close();		
-		}
-	}
-
-	public void updateRole(Role role) {
-		Session session = HibernateConfig.getSessionFactory().openSession();
-		Transaction transaction = null;
-		try{
-			transaction = session.beginTransaction();
-			session.merge(role);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null)
-				transaction.rollback();
-			e.printStackTrace();
-		}finally {
-			session.close();
-		}
-	}
-
-	public void deleteRole(int id) {
+	public void saveAppUser(AppUser appUser) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			Role role = session.find(Role.class, id);
-			if (role != null) {
-				session.remove(role);
+			session.persist(appUser);
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void updateAppUser(AppUser appUser) {
+		Session session = HibernateConfig.getSessionFactory().openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.merge(appUser);
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	public void deleteAppUser(int id) {
+		Session session = HibernateConfig.getSessionFactory().openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			AppUser Appuser = session.find(AppUser.class, id);
+			if (Appuser != null) {
+				session.remove(Appuser);
 			}
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null)
 				transaction.rollback();
 			e.printStackTrace();
-		}finally {
+		} finally {
 			session.close();
 		}
 	}
 
-	public Role getRoleById(int id) {
+	public AppUser getAppUserById(int id) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			return session.get(Role.class, id);
-		}finally {
+			return session.get(AppUser.class, id);
+		} finally {
 			session.close();
 		}
 	}
 
-	public List<Role> getAllRoles() {
-		Session session =  HibernateConfig.getSessionFactory().openSession();
+	public List<AppUser> getAllAppUsers() {
+		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			Query<Role> query = session.createQuery("FROM Role", Role.class);
+			Query<AppUser> query = session.createQuery("FROM AppUser", AppUser.class);
 			return query.getResultList();
-		}finally {
+		} finally {
 			session.close();
 		}
 	}
