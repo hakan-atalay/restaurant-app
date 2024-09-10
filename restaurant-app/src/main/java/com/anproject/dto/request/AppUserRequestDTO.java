@@ -1,6 +1,5 @@
 package com.anproject.dto.request;
 
-import java.util.Objects;
 
 import com.anproject.entity.AppUser;
 import com.anproject.entity.Role;
@@ -10,17 +9,17 @@ public class AppUserRequestDTO {
 	private String nickname;
 	private String email;
 	private String password;
-	private Role role;
+	private int roleId;
 
 	public AppUserRequestDTO() {}
 
-	public static AppUser toEntity(AppUserRequestDTO appUserRequestDto) {
+	public static AppUser toEntity(AppUserRequestDTO appUserRequestDto, Role role) {
 		AppUser appUser = new AppUser();
 		appUser.setId(appUserRequestDto.getId());
 		appUser.setNickname(appUserRequestDto.getNickname());
 		appUser.setEmail(appUserRequestDto.getEmail());
 		appUser.setPassword(appUserRequestDto.getPassword());
-		appUser.setRole(appUserRequestDto.getRole());
+		appUser.setRole(role);
 		return appUser;
 	}
 
@@ -56,29 +55,12 @@ public class AppUserRequestDTO {
 		this.password = password;
 	}
 
-	public Role getRole() {
-		return role;
+	public int getRoleId() {
+		return roleId;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AppUserRequestDTO other = (AppUserRequestDTO) obj;
-		return id == other.id;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 
 }

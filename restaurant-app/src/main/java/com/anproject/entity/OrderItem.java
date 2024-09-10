@@ -17,8 +17,10 @@ public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "quantity")
 	private int quantity;
+	
 	@Column(name = "price")
 	private double price;
 
@@ -34,7 +36,6 @@ public class OrderItem {
 	}
 
 	public OrderItem(int id, int quantity, double price, Order order, Product product) {
-		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.price = price;

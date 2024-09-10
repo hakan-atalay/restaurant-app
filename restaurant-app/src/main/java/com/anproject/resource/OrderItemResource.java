@@ -2,9 +2,9 @@ package com.anproject.resource;
 
 import java.util.List;
 
-import com.anproject.dto.request.AppUserRequestDTO;
-import com.anproject.dto.response.AppUserResponseDTO;
-import com.anproject.service.AppUserService;
+import com.anproject.dto.request.OrderItemRequestDTO;
+import com.anproject.dto.response.OrderItemResponseDTO;
+import com.anproject.service.OrderItemService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -18,21 +18,22 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/users")
-public class AppUserResource {
-	
+@Path("order-items")
+public class OrderItemResource {
+
 	@Inject
-	AppUserService appUserService;
-	
+	private OrderItemService orderItemService;
+
 	@POST
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveAppUser(AppUserRequestDTO appUserRequestDto) {
+	public Response saveOrderItem(OrderItemRequestDTO orderItemRequestDto) {
 		try {
-			appUserService.saveAppUser(appUserRequestDto);
-			return Response.status(Response.Status.CREATED).entity(appUserRequestDto).build();
+			orderItemService.saveOrderItem(orderItemRequestDto);
+			return Response.status(Response.Status.CREATED).entity(orderItemRequestDto).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -41,11 +42,12 @@ public class AppUserResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAppUser(AppUserRequestDTO appUserRequestDto) {
+	public Response updateOrderItem(OrderItemRequestDTO orderItemRequestDto) {
 		try {
-			appUserService.updateAppUser(appUserRequestDto);
-			return Response.status(Response.Status.OK).entity(appUserRequestDto).build();
+			orderItemService.updateOrderItem(orderItemRequestDto);
+			return Response.status(Response.Status.OK).entity(orderItemRequestDto).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -53,11 +55,12 @@ public class AppUserResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteRole(@PathParam("id") int id) {
+	public Response deleteOrderItem(@PathParam("id") int id) {
 		try {
-			appUserService.deleteAppUser(id);
+			orderItemService.deleteOrderItem(id);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -65,15 +68,16 @@ public class AppUserResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRoleById(@PathParam("id") int id) {
+	public Response getOrderItemById(@PathParam("id") int id) {
 		try {
-			AppUserResponseDTO user = appUserService.getUserById(id);
-			if (user != null) {
-				return Response.status(Response.Status.OK).entity(user).build();
+			OrderItemResponseDTO orderItem = orderItemService.getOrderItemById(id);
+			if (orderItem != null) {
+				return Response.status(Response.Status.OK).entity(orderItem).build();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -81,13 +85,14 @@ public class AppUserResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRoles() {
+	public Response getAllOrderItems() {
 		try {
-			List<AppUserResponseDTO> users = appUserService.getAllAppUsers();
-			return Response.status(Response.Status.OK).entity(users).build();
+			List<OrderItemResponseDTO> orderItems = orderItemService.getAllOrderItems();
+			return Response.status(Response.Status.OK).entity(orderItems).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 }

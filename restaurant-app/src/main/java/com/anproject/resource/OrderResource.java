@@ -2,9 +2,9 @@ package com.anproject.resource;
 
 import java.util.List;
 
-import com.anproject.dto.request.AppUserRequestDTO;
-import com.anproject.dto.response.AppUserResponseDTO;
-import com.anproject.service.AppUserService;
+import com.anproject.dto.request.OrderRequestDTO;
+import com.anproject.dto.response.OrderResponseDTO;
+import com.anproject.service.OrderService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -18,21 +18,22 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/users")
-public class AppUserResource {
-	
+@Path("orders")
+public class OrderResource {
+
 	@Inject
-	AppUserService appUserService;
-	
+	private OrderService orderService;
+
 	@POST
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveAppUser(AppUserRequestDTO appUserRequestDto) {
+	public Response saveOrder(OrderRequestDTO orderRequestDto) {
 		try {
-			appUserService.saveAppUser(appUserRequestDto);
-			return Response.status(Response.Status.CREATED).entity(appUserRequestDto).build();
+			orderService.saveOrder(orderRequestDto);
+			return Response.status(Response.Status.CREATED).entity(orderRequestDto).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -41,11 +42,12 @@ public class AppUserResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAppUser(AppUserRequestDTO appUserRequestDto) {
+	public Response updateOrder(OrderRequestDTO orderRequestDto) {
 		try {
-			appUserService.updateAppUser(appUserRequestDto);
-			return Response.status(Response.Status.OK).entity(appUserRequestDto).build();
+			orderService.updateOrder(orderRequestDto);
+			return Response.status(Response.Status.OK).entity(orderRequestDto).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -53,11 +55,12 @@ public class AppUserResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteRole(@PathParam("id") int id) {
+	public Response deleteOrder(@PathParam("id") int id) {
 		try {
-			appUserService.deleteAppUser(id);
+			orderService.deleteOrder(id);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -65,15 +68,16 @@ public class AppUserResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRoleById(@PathParam("id") int id) {
+	public Response getOrderById(@PathParam("id") int id) {
 		try {
-			AppUserResponseDTO user = appUserService.getUserById(id);
-			if (user != null) {
-				return Response.status(Response.Status.OK).entity(user).build();
+			OrderResponseDTO order = orderService.getOrderById(id);
+			if (order != null) {
+				return Response.status(Response.Status.OK).entity(order).build();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -81,11 +85,12 @@ public class AppUserResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRoles() {
+	public Response getAllOrders() {
 		try {
-			List<AppUserResponseDTO> users = appUserService.getAllAppUsers();
-			return Response.status(Response.Status.OK).entity(users).build();
+			List<OrderResponseDTO> orders = orderService.getAllOrders();
+			return Response.status(Response.Status.OK).entity(orders).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}

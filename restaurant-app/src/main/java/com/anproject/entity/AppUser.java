@@ -23,14 +23,19 @@ public class AppUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "nickname")
 	private String nickname;
+	
 	@Column(name = "email")
 	private String email;
+	
 	@Column(name = "password")
 	private String password;
+	
 	@Column(name = "created")
 	private Date created;
+	
 	@Column(name = "updated")
 	private Date updated;
 

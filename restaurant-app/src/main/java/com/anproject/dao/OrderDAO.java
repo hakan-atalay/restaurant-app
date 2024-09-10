@@ -7,16 +7,16 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.anproject.config.HibernateConfig;
-import com.anproject.entity.AppUser;
+import com.anproject.entity.Order;
 
-public class AppUserDAO {
+public class OrderDAO {
 
-	public void saveAppUser(AppUser appUser) {
+	public void saveOrder(Order order) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.persist(appUser);
+			session.persist(order);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null)
@@ -27,12 +27,12 @@ public class AppUserDAO {
 		}
 	}
 
-	public void updateAppUser(AppUser appUser) {
+	public void updateOrder(Order order) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.merge(appUser);
+			session.merge(order);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null)
@@ -43,14 +43,14 @@ public class AppUserDAO {
 		}
 	}
 
-	public void deleteAppUser(int id) {
+	public void deleteOrder(int id) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			AppUser Appuser = session.find(AppUser.class, id);
-			if (Appuser != null) {
-				session.remove(Appuser);
+			Order order = session.find(Order.class, id);
+			if (order != null) {
+				session.remove(order);
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -62,34 +62,23 @@ public class AppUserDAO {
 		}
 	}
 
-	public AppUser getAppUserById(int id) {
+	public Order getOrderById(int id) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			return session.get(AppUser.class, id);
+			return session.get(Order.class, id);
 		} finally {
 			session.close();
 		}
 	}
 
-	public AppUser getAppUserByNickname(String nickname) {
+	public List<Order> getAllOrders() {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			String hql = "FROM AppUser WHERE nickname = :nickname";
-			Query<AppUser> query = session.createQuery(hql, AppUser.class);
-			query.setParameter("nickname", nickname);
-			return query.uniqueResult();
-		} finally {
-			session.close();
-		}
-	}
-
-	public List<AppUser> getAllAppUsers() {
-		Session session = HibernateConfig.getSessionFactory().openSession();
-		try {
-			Query<AppUser> query = session.createQuery("FROM AppUser", AppUser.class);
+			Query<Order> query = session.createQuery("FROM Order", Order.class);
 			return query.getResultList();
 		} finally {
 			session.close();
 		}
 	}
+	
 }

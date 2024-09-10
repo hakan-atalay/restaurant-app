@@ -18,9 +18,4 @@ public class HibernateConfig {
 		return sessionFactory;
 	}
 
-	public static void shutdown() {
-		if (sessionFactory != null) {
-			sessionFactory.close();
-		}
-	}
 }

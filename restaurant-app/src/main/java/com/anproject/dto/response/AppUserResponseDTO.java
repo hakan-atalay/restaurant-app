@@ -5,6 +5,7 @@ import java.util.Date;
 import com.anproject.entity.AppUser;
 
 public class AppUserResponseDTO {
+	private int id;
 	private String nickname;
 	private String email;
 	private RoleResponseDTO roleResponseDto;
@@ -14,7 +15,9 @@ public class AppUserResponseDTO {
 	public AppUserResponseDTO() {
 	}
 
-	public AppUserResponseDTO(String nickname, String email, RoleResponseDTO roleResponseDto, Date created, Date updated) {
+	public AppUserResponseDTO(int id, String nickname, String email, RoleResponseDTO roleResponseDto, Date created,
+			Date updated) {
+		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
 		this.roleResponseDto = roleResponseDto;
@@ -24,10 +27,20 @@ public class AppUserResponseDTO {
 
 	public static AppUserResponseDTO fromEntity(AppUser appUser) {
 		return new AppUserResponseDTO(
+				appUser.getId(),
 				appUser.getNickname(), 
 				appUser.getEmail(),
 				RoleResponseDTO.fromEntity(appUser.getRole()),
-				appUser.getCreated(), appUser.getUpdated());
+				appUser.getCreated(), 
+				appUser.getUpdated());
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNickname() {

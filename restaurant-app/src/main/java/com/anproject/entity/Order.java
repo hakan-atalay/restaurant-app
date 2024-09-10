@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,10 +24,13 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "total_price")
 	private double totalPrice;
+	
 	@Column(name = "order_date")
 	private Date orderDate;
+	
 	@Column(name = "status")
 	private boolean status;
 
@@ -33,18 +38,19 @@ public class Order {
 	@JoinColumn(name = "user_id")
 	private AppUser user;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
 	public Order() {
 	}
 
-	public Order(int id, double totalPrice, Date orderDate, boolean status, AppUser user) {
+	public Order(int id, double totalPrice, Date orderDate, boolean status, AppUser user, List<OrderItem> orderItems) {
 		this.id = id;
 		this.totalPrice = totalPrice;
 		this.orderDate = orderDate;
 		this.status = status;
 		this.user = user;
+		this.orderItems = orderItems;
 	}
 
 	public int getId() {
@@ -57,6 +63,10 @@ public class Order {
 
 	public double getTotalPrice() {
 		return totalPrice;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 
 	public void setTotalPrice(double totalPrice) {

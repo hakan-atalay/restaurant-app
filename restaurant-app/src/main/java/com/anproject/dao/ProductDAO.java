@@ -7,16 +7,16 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.anproject.config.HibernateConfig;
-import com.anproject.entity.AppUser;
+import com.anproject.entity.Product;
 
-public class AppUserDAO {
+public class ProductDAO {
 
-	public void saveAppUser(AppUser appUser) {
+	public void saveProduct(Product product) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.persist(appUser);
+			session.merge(product);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null)
@@ -27,12 +27,12 @@ public class AppUserDAO {
 		}
 	}
 
-	public void updateAppUser(AppUser appUser) {
+	public void updateProduct(Product product) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.merge(appUser);
+			session.merge(product);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null)
@@ -43,14 +43,14 @@ public class AppUserDAO {
 		}
 	}
 
-	public void deleteAppUser(int id) {
+	public void deleteProduct(int id) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			AppUser Appuser = session.find(AppUser.class, id);
-			if (Appuser != null) {
-				session.remove(Appuser);
+			Product product = session.find(Product.class, id);
+			if (product != null) {
+				session.remove(product);
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -62,34 +62,23 @@ public class AppUserDAO {
 		}
 	}
 
-	public AppUser getAppUserById(int id) {
+	public Product getProductById(int id) {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			return session.get(AppUser.class, id);
+			return session.get(Product.class, id);
 		} finally {
 			session.close();
 		}
 	}
 
-	public AppUser getAppUserByNickname(String nickname) {
+	public List<Product> getAllProducts() {
 		Session session = HibernateConfig.getSessionFactory().openSession();
 		try {
-			String hql = "FROM AppUser WHERE nickname = :nickname";
-			Query<AppUser> query = session.createQuery(hql, AppUser.class);
-			query.setParameter("nickname", nickname);
-			return query.uniqueResult();
-		} finally {
-			session.close();
-		}
-	}
-
-	public List<AppUser> getAllAppUsers() {
-		Session session = HibernateConfig.getSessionFactory().openSession();
-		try {
-			Query<AppUser> query = session.createQuery("FROM AppUser", AppUser.class);
+			Query<Product> query = session.createQuery("FROM Product", Product.class);
 			return query.getResultList();
 		} finally {
 			session.close();
 		}
 	}
+	
 }

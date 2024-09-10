@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,17 +23,18 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "category_name")
 	private String categoryName;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "parent_id")
 	private Category parentCategory;
 
-	@OneToMany(mappedBy = "parentCategory")
+	@OneToMany(mappedBy = "parentCategory",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Category> subCategories = new ArrayList<>();
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
 	private List<Product> products = new ArrayList<>();
 
 	public Category() {
@@ -98,7 +101,7 @@ public class Category {
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", categoryName=" + categoryName + ", parentCategory=" + parentCategory
-				+ ", subCategories=" + subCategories + ", products=" + products + "]";
+				+ ", products=" + products + "]";
 	}
 
 }
