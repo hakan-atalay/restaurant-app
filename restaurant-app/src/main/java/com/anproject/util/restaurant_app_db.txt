@@ -1,0 +1,64 @@
+create table roles(
+	id serial primary key,
+	role_name varchar unique
+);
+
+create table app_users(
+	id serial primary key,
+	nickname varchar,
+	email varchar,
+	password varchar,
+	role_id int,
+	created timestamp,
+	updated timestamp,
+	foreign key (role_id) references roles(id)
+	on update cascade
+	on delete cascade
+);
+
+create table categories(
+	id serial primary key,
+	category_name varchar,
+	parent_id int,
+	foreign key (parent_id) references categories(id)
+	on update cascade
+	on delete cascade
+);
+
+create table products(
+	id serial primary key,
+	product_name varchar,
+	price double precision,
+	photos varchar,
+	category_id int,
+	created timestamp,
+	updated timestamp,
+	foreign key (category_id) references categories(id)
+	on update cascade
+	on delete cascade
+);
+
+create table orders(
+	id serial primary key,
+	user_id int,
+	total_price double precision,
+	order_date timestamp,
+	status boolean,
+	foreign key (user_id) references app_users(id)
+	on update cascade
+	on delete cascade
+);
+
+create table order_items(
+	id serial primary key,
+	order_id int,
+	product_id int,
+	quantity int,
+	price double precision,
+	foreign key (order_id) references orders(id)
+	on update cascade
+	on delete cascade,
+	foreign key (product_id) references products(id)	
+	on update cascade
+	on delete cascade
+);

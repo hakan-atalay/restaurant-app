@@ -10,6 +10,7 @@ import com.anproject.dto.request.AppUserRequestDTO;
 import com.anproject.dto.response.AppUserResponseDTO;
 import com.anproject.entity.AppUser;
 import com.anproject.entity.Role;
+import com.anproject.security.PasswordHashingService;
 
 import jakarta.inject.Inject;
 
@@ -20,10 +21,14 @@ public class AppUserService {
 
 	@Inject
 	private RoleDAO roleDAO;
+	
+	@Inject
+	private PasswordHashingService passwordHashingService;
 
 	public void saveAppUser(AppUserRequestDTO appUserRequestDto) {
 		Role role = roleDAO.getRoleById(appUserRequestDto.getRoleId());
 		AppUser appUser = appUserRequestDto.toEntity(appUserRequestDto, role);
+		appUser.setPassword(passwordHashingService.hashPassword(appUser.getPassword()));
 		appUser.setCreated(new Date());
 		appUserDao.saveAppUser(appUser);
 	}
@@ -36,6 +41,13 @@ public class AppUserService {
 			AppUser appUser = appUserRequestDto.toEntity(appUserRequestDto, role);
 			appUser.setCreated(existingAppUser.getCreated());
 			appUser.setUpdated(new Date());
+			
+			  if (appUserRequestDto.getPassword() != null && !appUserRequestDto.getPassword().isEmpty()) {
+	                appUser.setPassword(passwordHashingService.hashPassword(appUserRequestDto.getPassword()));
+	            } else {
+	                appUser.setPassword(existingAppUser.getPassword());
+	            }
+			  
 			appUserDao.updateAppUser(appUser);
 		}
 

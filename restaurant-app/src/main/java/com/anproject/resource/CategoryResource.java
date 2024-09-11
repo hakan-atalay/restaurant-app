@@ -6,6 +6,7 @@ import com.anproject.dto.request.CategoryRequestDTO;
 import com.anproject.dto.response.CategoryResponseDTO;
 import com.anproject.service.CategoryService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -28,6 +29,7 @@ public class CategoryResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response saveCategory(CategoryRequestDTO categoryRequestDto) {
 		try {
 			System.out.println(categoryRequestDto.getCategoryName() + " " + categoryRequestDto.getParentId());
@@ -42,6 +44,7 @@ public class CategoryResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response updateCategory(CategoryRequestDTO categoryRequestDto) {
 		try {
 			categoryService.updateCategory(categoryRequestDto);
@@ -54,6 +57,7 @@ public class CategoryResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response deleteCategory(@PathParam("id") int id) {
 		try {
 			categoryService.deleteCategory(id);
@@ -66,6 +70,7 @@ public class CategoryResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getCategoryById(@PathParam("id") int id) {
 		try {
 			CategoryResponseDTO category = categoryService.getCategoryById(id);
@@ -83,6 +88,7 @@ public class CategoryResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getAllCategories() {
 		try {
 			List<CategoryResponseDTO> categories = categoryService.getAllCategories();

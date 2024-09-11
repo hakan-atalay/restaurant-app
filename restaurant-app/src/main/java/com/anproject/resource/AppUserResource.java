@@ -6,6 +6,7 @@ import com.anproject.dto.request.AppUserRequestDTO;
 import com.anproject.dto.response.AppUserResponseDTO;
 import com.anproject.service.AppUserService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -28,6 +29,7 @@ public class AppUserResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response saveAppUser(AppUserRequestDTO appUserRequestDto) {
 		try {
 			appUserService.saveAppUser(appUserRequestDto);
@@ -41,6 +43,7 @@ public class AppUserResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response updateAppUser(AppUserRequestDTO appUserRequestDto) {
 		try {
 			appUserService.updateAppUser(appUserRequestDto);
@@ -53,7 +56,8 @@ public class AppUserResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteRole(@PathParam("id") int id) {
+	@RolesAllowed("admin")
+	public Response deleteAppUser(@PathParam("id") int id) {
 		try {
 			appUserService.deleteAppUser(id);
 			return Response.status(Response.Status.NO_CONTENT).build();
@@ -65,7 +69,8 @@ public class AppUserResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRoleById(@PathParam("id") int id) {
+	@RolesAllowed({"admin", "regular_user"})
+	public Response getAppUserById(@PathParam("id") int id) {
 		try {
 			AppUserResponseDTO user = appUserService.getUserById(id);
 			if (user != null) {
@@ -81,7 +86,8 @@ public class AppUserResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRoles() {
+	@RolesAllowed("admin")
+	public Response getAllAppUser() {
 		try {
 			List<AppUserResponseDTO> users = appUserService.getAllAppUsers();
 			return Response.status(Response.Status.OK).entity(users).build();

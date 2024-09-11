@@ -11,6 +11,7 @@ import com.anproject.dto.response.ProductResponseDTO;
 import com.anproject.service.ProductService;
 import com.anproject.util.FileUploadUtil;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -36,6 +37,7 @@ public class ProductResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response saveProduct(ProductRequestDTO productRequestDto) {
 		try {
 			productService.saveProduct(productRequestDto);
@@ -50,13 +52,12 @@ public class ProductResource {
 	@Path("/upload-image/{productId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response uploadImage(
 			@PathParam("productId") int productId,
 			@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDetails) {
 		try {
-			System.out.println(fileDetails.getFileName()+ "*******************************************");
-			System.out.println(System.getProperty("user.dir"));
 			fileUploadUtil.saveFile(uploadedInputStream, fileDetails.getFileName());
 			productService.updateProductPhoto(productId, fileDetails.getFileName());
 			return Response.status(Response.Status.CREATED).entity(fileDetails.getFileName()).build();
@@ -70,6 +71,7 @@ public class ProductResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response updateProduct(ProductRequestDTO productRequestDto) {
 		try {
 			productService.updateProduct(productRequestDto);
@@ -83,6 +85,7 @@ public class ProductResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response deleteProduct(@PathParam("id") int id) {
 		try {
 			productService.deleteProduct(id);
@@ -96,6 +99,7 @@ public class ProductResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getProductById(@PathParam("id") int id) {
 		try {
 			ProductResponseDTO product = productService.getProductById(id);
@@ -113,6 +117,7 @@ public class ProductResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getAllProducts() {
 		try {
 			List<ProductResponseDTO> products = productService.getAllProducts();

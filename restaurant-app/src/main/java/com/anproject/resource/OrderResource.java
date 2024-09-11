@@ -6,6 +6,7 @@ import com.anproject.dto.request.OrderRequestDTO;
 import com.anproject.dto.response.OrderResponseDTO;
 import com.anproject.service.OrderService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -28,6 +29,7 @@ public class OrderResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response saveOrder(OrderRequestDTO orderRequestDto) {
 		try {
 			orderService.saveOrder(orderRequestDto);
@@ -42,6 +44,7 @@ public class OrderResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response updateOrder(OrderRequestDTO orderRequestDto) {
 		try {
 			orderService.updateOrder(orderRequestDto);
@@ -55,6 +58,7 @@ public class OrderResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response deleteOrder(@PathParam("id") int id) {
 		try {
 			orderService.deleteOrder(id);
@@ -68,6 +72,7 @@ public class OrderResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getOrderById(@PathParam("id") int id) {
 		try {
 			OrderResponseDTO order = orderService.getOrderById(id);
@@ -85,6 +90,7 @@ public class OrderResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response getAllOrders() {
 		try {
 			List<OrderResponseDTO> orders = orderService.getAllOrders();

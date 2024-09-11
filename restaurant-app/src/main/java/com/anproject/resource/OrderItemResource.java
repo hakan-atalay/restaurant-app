@@ -6,6 +6,7 @@ import com.anproject.dto.request.OrderItemRequestDTO;
 import com.anproject.dto.response.OrderItemResponseDTO;
 import com.anproject.service.OrderItemService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -28,6 +29,7 @@ public class OrderItemResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response saveOrderItem(OrderItemRequestDTO orderItemRequestDto) {
 		try {
 			orderItemService.saveOrderItem(orderItemRequestDto);
@@ -42,6 +44,7 @@ public class OrderItemResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response updateOrderItem(OrderItemRequestDTO orderItemRequestDto) {
 		try {
 			orderItemService.updateOrderItem(orderItemRequestDto);
@@ -55,6 +58,7 @@ public class OrderItemResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response deleteOrderItem(@PathParam("id") int id) {
 		try {
 			orderItemService.deleteOrderItem(id);
@@ -68,6 +72,7 @@ public class OrderItemResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getOrderItemById(@PathParam("id") int id) {
 		try {
 			OrderItemResponseDTO orderItem = orderItemService.getOrderItemById(id);
@@ -85,6 +90,7 @@ public class OrderItemResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin", "regular_user"})
 	public Response getAllOrderItems() {
 		try {
 			List<OrderItemResponseDTO> orderItems = orderItemService.getAllOrderItems();

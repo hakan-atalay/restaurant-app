@@ -6,6 +6,7 @@ import com.anproject.dto.request.RoleRequestDTO;
 import com.anproject.dto.response.RoleResponseDTO;
 import com.anproject.service.RoleService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -28,6 +29,7 @@ public class RoleResource {
 	@Path("/save")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response saveRole(RoleRequestDTO roleRequestDto) {
 		try {
 			roleService.saveRole(roleRequestDto);
@@ -41,6 +43,7 @@ public class RoleResource {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response updateRole(RoleRequestDTO roleRequestDto) {
 		try {
 			roleService.updateRole(roleRequestDto);
@@ -53,6 +56,7 @@ public class RoleResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response deleteRole(@PathParam("id") int id) {
 		try {
 			roleService.deleteRole(id);
@@ -65,6 +69,7 @@ public class RoleResource {
 	@GET
 	@Path("/get-by-id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response getRoleById(@PathParam("id") int id) {
 		try {
 			RoleResponseDTO role = roleService.getRoleById(id);
@@ -81,6 +86,7 @@ public class RoleResource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response getAllRoles() {
 		try {
 			List<RoleResponseDTO> roles = roleService.getAllRoles();
