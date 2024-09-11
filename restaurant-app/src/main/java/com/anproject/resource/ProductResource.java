@@ -1,10 +1,15 @@
 package com.anproject.resource;
 
+import java.io.InputStream;
 import java.util.List;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.anproject.dto.request.ProductRequestDTO;
 import com.anproject.dto.response.ProductResponseDTO;
 import com.anproject.service.ProductService;
+import com.anproject.util.FileUploadUtil;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -23,6 +28,9 @@ public class ProductResource {
 
 	@Inject
 	private ProductService productService;
+	
+	@Inject
+	private FileUploadUtil fileUploadUtil;
 
 	@POST
 	@Path("/save")
@@ -32,6 +40,26 @@ public class ProductResource {
 		try {
 			productService.saveProduct(productRequestDto);
 			return Response.status(Response.Status.CREATED).entity(productRequestDto).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@POST
+	@Path("/upload-image/{productId}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response uploadImage(
+			@PathParam("productId") int productId,
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetails) {
+		try {
+			System.out.println(fileDetails.getFileName()+ "*******************************************");
+			System.out.println(System.getProperty("user.dir"));
+			fileUploadUtil.saveFile(uploadedInputStream, fileDetails.getFileName());
+			productService.updateProductPhoto(productId, fileDetails.getFileName());
+			return Response.status(Response.Status.CREATED).entity(fileDetails.getFileName()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

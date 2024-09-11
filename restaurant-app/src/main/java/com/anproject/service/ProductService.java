@@ -53,5 +53,13 @@ public class ProductService {
 		List<Product> productList = productDao.getAllProducts();
 		return productList.stream().map(ProductResponseDTO::fromEntity).collect(Collectors.toList());
 	}
+
+	public void updateProductPhoto(int productId, String fileName) {
+		Product product = productDao.getProductById(productId);
+        if (product != null) {
+            product.setPhotos(fileName);
+            productDao.updateProduct(product);
+        }
+	}
 	
 }
